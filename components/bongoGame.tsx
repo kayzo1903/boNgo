@@ -27,7 +27,27 @@ const BoNgoGame = () => {
   const startGame = () => {
     generateDigits(digitFig);
     setGameState("memorize");
-    setTimer(5 + level - 1); // Increase timer by level
+    if (level === 5 ) {
+      setTimer(5 + 2); // Increase timer by level
+    }
+    if (level === 8) {
+      setTimer(5 + 4 )
+    }
+    if (level === 11) {
+      setTimer(5 + 6 )
+    }
+    if (level === 15) {
+      setTimer(5 + 8)
+    }
+  };
+
+  //handle clear and delete of the inputdigits
+  const handleDelete = () => {
+    setInputDigits((prev) => prev.slice(0, -1));
+  };
+  
+  const handleClear = () => {
+    setInputDigits([]);
   };
 
   // Handle timer countdown
@@ -37,7 +57,21 @@ const BoNgoGame = () => {
       return () => clearTimeout(countdown);
     } else if (timer === 0 && gameState === "memorize") {
       setGameState("recall");
-      setTimer(5 + level - 1); // Adjust recall timer
+      if (level <= 4) {
+        setTimer(5)
+      }; // Adjust recall timer
+      if (level <= 5 ) {
+        setTimer(5 + 2); // Increase timer by level
+      }
+      if (level <= 8) {
+        setTimer(5 + 4 )
+      }
+      if (level === 11) {
+        setTimer(5 + 6 )
+      }
+      if (level === 15) {
+        setTimer(5 + 8)
+      }
     } else if (gameState === "recall" && timer > 0) {
       const countdown = setTimeout(() => setTimer(timer - 1), 1000);
       return () => clearTimeout(countdown);
@@ -123,7 +157,7 @@ const BoNgoGame = () => {
           <p className="text-2xl text-gray-800 leading-relaxed text-center w-full px-2 justify-center">
             Time left: <span className="text-red-600">{timer} seconds</span>
           </p>
-          <NumberPad onNumberClick={handleChange} />
+          <NumberPad onNumberClick={handleChange} onClear={handleClear} onDelete={handleDelete}/>
         </div>
       )}
 
