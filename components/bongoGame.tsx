@@ -6,7 +6,7 @@ import NumberPad from "./Numberpad";
 const BoNgoGame = () => {
   const [win, setWin] = useState(false);
   const [digits, setDigits] = useState<number[]>([]);
-  const [inputDigits, setInputDigits] = useState<string[]>([]);
+  const [inputDigits, setInputDigits] = useState<number[]>([]);
   const [gameState, setGameState] = useState<
     "start" | "memorize" | "recall" | "result"
   >("start");
@@ -27,61 +27,59 @@ const BoNgoGame = () => {
   const startGame = () => {
     generateDigits(digitFig);
     setGameState("memorize");
-    if (level === 5 ) {
-      setTimer(5 + 2); // Increase timer by level
+
+    // Adjust timer based on level for the memorize phase
+    let newTimer = 5;
+    if (level >= 4 && level < 7) {
+      newTimer = 7; // Levels 4 to 6
+    } else if (level >= 7 && level < 10) {
+      newTimer = 9; // Levels 7 to 9
+    } else if (level >= 10 && level < 13) {
+      newTimer = 11; // Levels 10 to 12
+    } else if (level >= 13 && level <= 15) {
+      newTimer = 13; // Levels 13 to 15
     }
-    if (level === 8) {
-      setTimer(5 + 4 )
-    }
-    if (level === 11) {
-      setTimer(5 + 6 )
-    }
-    if (level === 15) {
-      setTimer(5 + 8)
-    }
+    setTimer(newTimer);
   };
 
-  //handle clear and delete of the inputdigits
+  // Handle clear and delete of the input digits
   const handleDelete = () => {
     setInputDigits((prev) => prev.slice(0, -1));
   };
-  
+
   const handleClear = () => {
     setInputDigits([]);
   };
 
-  // Handle timer countdown
+  // Handle timer countdown and game state transitions
   useEffect(() => {
-    if (gameState === "memorize" && timer > 0) {
+    if (timer > 0) {
       const countdown = setTimeout(() => setTimer(timer - 1), 1000);
       return () => clearTimeout(countdown);
-    } else if (timer === 0 && gameState === "memorize") {
-      setGameState("recall");
-      if (level <= 4) {
-        setTimer(5)
-      }; // Adjust recall timer
-      if (level <= 5 ) {
-        setTimer(5 + 2); // Increase timer by level
+    } else if (timer === 0) {
+      if (gameState === "memorize") {
+        setGameState("recall");
+
+        // Reset timer for recall phase
+        let recallTimer = 5;
+        if (level >= 4 && level < 7) {
+          recallTimer = 7;
+        } else if (level >= 7 && level < 10) {
+          recallTimer = 9;
+        } else if (level >= 10 && level < 13) {
+          recallTimer = 11;
+        } else if (level >= 13 && level <= 15) {
+          recallTimer = 13;
+        }
+        setTimer(recallTimer);
+      } else if (gameState === "recall") {
+        setGameState("result");
       }
-      if (level <= 8) {
-        setTimer(5 + 4 )
-      }
-      if (level === 11) {
-        setTimer(5 + 6 )
-      }
-      if (level === 15) {
-        setTimer(5 + 8)
-      }
-    } else if (gameState === "recall" && timer > 0) {
-      const countdown = setTimeout(() => setTimer(timer - 1), 1000);
-      return () => clearTimeout(countdown);
-    } else if (timer === 0 && gameState === "recall") {
-      setGameState("result");
     }
   }, [timer, gameState]);
 
   // Handle input change
-  const handleChange = (number: any) => {
+  const handleChange = (number: number) => {
     setInputDigits((prev) => [...prev, number]);
   };
 
@@ -89,11 +87,11 @@ const BoNgoGame = () => {
   const checkResults = () => {
     if (JSON.stringify(digits) === JSON.stringify(inputDigits)) {
       setWin(true);
-      setScore(score + level); // Increment score by level
-      if (level < 9) { // Level up only if less than 9 digits
+      setScore(score + level); // Increment score by current level
+
+      if (level < 15) { // Level up only if less than 15 digits
         setLevel(level + 1);
         setDigitFig(digitFig + 2); // Increase digit length by 2
-        setTimer(5 + level); // Increase timer by 1 for the next level
       }
     } else {
       setWin(false);
@@ -157,7 +155,7 @@ const BoNgoGame = () => {
           <p className="text-2xl text-gray-800 leading-relaxed text-center w-full px-2 justify-center">
             Time left: <span className="text-red-600">{timer} seconds</span>
           </p>
-          <NumberPad onNumberClick={handleChange} onClear={handleClear} onDelete={handleDelete}/>
+          <NumberPad onNumberClick={handleChange} onClear={handleClear} onDelete={handleDelete} />
         </div>
       )}
 
@@ -169,10 +167,8 @@ const BoNgoGame = () => {
           <button
             onClick={startGame}
             className="bg-gray-800 text-gray-50 px-8 py-2 rounded-md md:w-96 w-full"
-          >{
-             win ? 
-            "Next level " : "Play Again"
-          }
+          >
+            {win ? "Next Level" : "Play Again"}
           </button>
         </div>
       )}

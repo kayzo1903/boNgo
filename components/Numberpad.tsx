@@ -1,7 +1,8 @@
+'use client'
 import React from "react";
 
 interface NumberPadProps {
-  onNumberClick: (number: string) => void;
+  onNumberClick: (number: number) => void;
   onDelete: () => void;
   onClear: () => void;
 }
@@ -12,10 +13,10 @@ const NumberPad: React.FC<NumberPadProps> = ({
   onClear,
 }) => {
   const buttons = [
-    "1", "2", "3",
-    "4", "5", "6",
-    "7", "8", "9",
-    "Del", "0", "Clr"
+    9, 8, 7,
+    6, 5, 4,
+    3, 2, 1,
+    "Del", 0, "Clr",
   ];
 
   return (
@@ -24,14 +25,16 @@ const NumberPad: React.FC<NumberPadProps> = ({
         <button
           key={index}
           onClick={() => {
-            if (button === "Del") onDelete();
-            else if (button === "Clr") onClear();
-            else onNumberClick(button);
+            if (typeof button === "number") {
+              onNumberClick(button);
+            } else if (button === "Del") {
+              onDelete();
+            } else if (button === "Clr") {
+              onClear();
+            }
           }}
           className={`bg-gray-800 text-white text-xl p-4 rounded-md ${
-            button === "Del" || button === "Clr"
-              ? "col-span-1"
-              : "col-span-1"
+            button === "Del" || button === "Clr" ? "col-span-1" : "col-span-1"
           }`}
         >
           {button}
