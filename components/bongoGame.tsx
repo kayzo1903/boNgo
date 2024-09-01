@@ -47,8 +47,8 @@ const BoNgoGame = () => {
   }, [timer, gameState]);
 
   // Handle input change
-  const handleChange = (number: number) => {
-    setInputDigits((prev) => [...prev, number.toString()]);
+  const handleChange = (number: any) => {
+    setInputDigits((prev) => [...prev, number]);
   };
 
   // Check the user's input against the generated digits
