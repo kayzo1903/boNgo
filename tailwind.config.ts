@@ -10,8 +10,8 @@ const config: Config = {
     extend: {
       backgroundImage: {
         "homeimage": "url('/images/homegame.png')",
-        "secongimage" : "url('/images/secondimage.png')",
-        "third" : "url('/images/thirdimage.jpg')"
+        "homeigame2" : "url('/images/homegame2.png')",
+        "homeigame3" : "url('/images/homegame3.jpg')",
       },
     },
   },

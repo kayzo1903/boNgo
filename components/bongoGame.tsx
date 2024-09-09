@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import StartGame from "./startGame";
 import NumberPad from "./Numberpad";
+import CerebrationsGPHY from "./cerebrationsGPHY";
+import Boo from "./Boo";
 
 const BoNgoGame = () => {
   const [win, setWin] = useState(false);
@@ -128,16 +130,16 @@ const BoNgoGame = () => {
   }, [gameState]);
 
   return (
-    <div className="min-h-screen space-y-4 bg-homeimage bg-cover  bg-no-repeat">
-      <h1 className="text-center text-gray-800 text-5xl md:text-7xl font-extrabold pt-8">
+    <div className="min-h-screen space-y-4 bg-homeigame3 bg-cover  bg-no-repeat">
+      <h1 className="text-center text-gray-100 text-5xl md:text-7xl font-extrabold pt-8">
         bo<span className="text-red-700">N</span>go
       </h1>
       <div className="flex justify-center gap-16 flex-nowrap px-2">
-        <span className="text-gray-700 font-semibold text-2xl md:text-3xl">
-          Level: {level.toString().padStart(2, "0")}
+        <span className="text-yellow-100 font-semibold text-2xl md:text-3xl">
+          level {level.toString().padStart(2, "0")}
         </span>
-        <span className="text-gray-700 font-semibold text-2xl md:text-3xl">
-          Score: {score.toString().padStart(2, "0")}
+        <span className="text-yellow-100 font-semibold text-2xl md:text-3xl">
+          score {score.toString().padStart(2, "0")}
         </span>
       </div>
       {gameState === "start" && (
@@ -154,13 +156,13 @@ const BoNgoGame = () => {
 
       {gameState === "memorize" && (
         <div className="mx-auto max-w-screen-md">
-          <p className="text-2xl text-gray-800 leading-relaxed text-center w-full px-2 justify-center">
+          <p className="text-2xl text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
             Memorize these digits:
           </p>
-          <h2 className="text-3xl font-extrabold text-gray-800 leading-relaxed text-center w-full px-2 justify-center">
+          <h2 className="text-3xl font-extrabold text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
             {digits.join(" ")}
           </h2>
-          <p className="text-2xl text-gray-800 leading-relaxed text-center w-full px-2 justify-center">
+          <p className="text-2xl text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
             Time left: <span className="text-red-600">{timer} seconds</span>
           </p>
         </div>
@@ -168,13 +170,13 @@ const BoNgoGame = () => {
 
       {gameState === "recall" && (
         <div className="mx-auto max-w-screen-md">
-          <p className="text-2xl text-gray-800 leading-relaxed text-center w-full px-2 justify-center">
+          <p className="text-2xl text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
             Enter the digits you remember
           </p>
-          <h2 className="text-3xl font-extrabold text-gray-800 leading-relaxed text-center w-full px-2 justify-center">
+          <h2 className="text-3xl font-extrabold text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
             {inputDigits.length <= 0 ? "- - - - -" : inputDigits.join(" ")}
           </h2>
-          <p className="text-2xl text-gray-800 leading-relaxed text-center w-full px-2 justify-center">
+          <p className="text-2xl text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
             Time left: <span className="text-red-600">{timer} seconds</span>
           </p>
           <NumberPad onNumberClick={handleChange} onClear={handleClear} onDelete={handleDelete} />
@@ -183,8 +185,8 @@ const BoNgoGame = () => {
 
       {gameState === "result" && (
         <div className="max-w-screen-md mx-auto px-4 flex flex-col justify-center items-center gap-48">
-          <div className="text-2xl text-gray-800 leading-relaxed text-center w-full px-2 justify-center">
-            {win ? "😎😎😎 Correct!" : "😛😛😛 Wrong!"}
+          <div className="text-2xl text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
+            {win ? <CerebrationsGPHY /> : <Boo />}
           </div>
           <button
             onClick={startGame}
