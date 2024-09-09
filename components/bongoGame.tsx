@@ -2,8 +2,8 @@
 import React, { useState, useEffect } from "react";
 import StartGame from "./startGame";
 import NumberPad from "./Numberpad";
-import CerebrationsGPHY from "./cerebrationsGPHY";
 import Boo from "./Boo";
+import Cerebrations from "./cerebrationsGPHY";
 
 const BoNgoGame = () => {
   const [win, setWin] = useState(false);
@@ -186,7 +186,7 @@ const BoNgoGame = () => {
       {gameState === "result" && (
         <div className="max-w-screen-md mx-auto px-4 flex flex-col justify-center items-center gap-48">
           <div className="text-2xl text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
-            {win ? <CerebrationsGPHY /> : <Boo />}
+            {win ? <Cerebrations /> : <Boo />}
           </div>
           <button
             onClick={startGame}
