@@ -135,18 +135,18 @@ const BoNgoGame = () => {
   }, [gameState]);
 
   return (
-    <div className="min-h-screen space-y-4 bg-homeigame3 bg-cover  bg-no-repeat">
+    <div className="min-h-screen space-y-4 bg-homeigame3 bg-cover  bg-no-repeat px-2">
       <h1 className="text-center text-gray-100 text-5xl md:text-7xl font-extrabold pt-8">
         bo<span className="text-red-700">N</span>go
       </h1>
       <div className="flex justify-center gap-16 flex-nowrap px-2">
-        <span className="text-yellow-100 font-semibold text-2xl md:text-3xl">
+        <span className="text-yellow-100 font-semibold  text-xl md:text-3xl">
           level {level.toString().padStart(2, "0")}
         </span>
-        <span className="text-yellow-100 font-semibold text-2xl md:text-3xl">
+        <span className="text-yellow-100 font-semibold text-xl md:text-3xl">
           score {score.toString().padStart(2, "0")}
         </span>
-        <span className="text-yellow-100 font-semibold text-2xl md:text-3xl">
+        <span className="text-yellow-100 font-semibold text-xl md:text-3xl">
           lives {lives.toString().padStart(2, "0")}
         </span>
       </div>
