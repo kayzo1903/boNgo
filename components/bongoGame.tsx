@@ -20,6 +20,7 @@ const BoNgoGame = () => {
   //celebration&boooo
   const playCerebration = () => {
    const audio = new Audio('/sounds/yeah.mp3')
+   audio.preload = "auto"
    audio.play();
 
    setTimeout(() => {
@@ -30,6 +31,7 @@ const BoNgoGame = () => {
 
   const booplayer = () => {
     const audio = new Audio('/sounds/boo.mp3')
+    audio.preload = "auto"
     audio.play();
 
     setTimeout(() => {
@@ -163,7 +165,7 @@ const BoNgoGame = () => {
             {digits.join(" ")}
           </h2>
           <p className="text-2xl text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
-            Time left: <span className="text-red-600">{timer} seconds</span>
+            Time left: <span className="text-yellow-100">{timer} seconds</span>
           </p>
         </div>
       )}
@@ -177,7 +179,7 @@ const BoNgoGame = () => {
             {inputDigits.length <= 0 ? "- - - - -" : inputDigits.join(" ")}
           </h2>
           <p className="text-2xl text-gray-100 leading-relaxed text-center w-full px-2 justify-center">
-            Time left: <span className="text-red-600">{timer} seconds</span>
+            Time left: <span className="text-yellow-100">{timer} seconds</span>
           </p>
           <NumberPad onNumberClick={handleChange} onClear={handleClear} onDelete={handleDelete} />
         </div>
