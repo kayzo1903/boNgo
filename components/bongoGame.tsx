@@ -18,6 +18,36 @@ const BoNgoGame = () => {
   const [level, setLevel] = useState<number>(1);
   const [digitFig, setDigitFig] = useState<number>(3);
   const [lives, setLives] = useState<number>(3); // New lives state
+  const [isLoading, setIsLoading] = useState(true); // To manage loading state
+
+  useEffect(() => {
+    const savedGameState = localStorage.getItem("bongogames");
+    if (savedGameState) {
+      const parsedState = JSON.parse(savedGameState);
+      if (parsedState) {
+        setGameState("start"); // Reset game state to "start" to prevent automatic result trigger
+        setScore(parsedState.score || 0);
+        setLevel(parsedState.level || 1);
+        setLives(parsedState.lives || 3);
+        setDigitFig(parsedState.digitFig || 3);
+      }
+    }
+    setIsLoading(false); // Set loading to false after retrieving state
+  }, []);
+
+  // Save game state to localStorage whenever any relevant state updates
+  useEffect(() => {
+    if (!isLoading) {
+      const gameData = {
+        gameState,
+        score,
+        level,
+        lives,
+        digitFig,
+      };
+      localStorage.setItem("bongogames", JSON.stringify(gameData));
+    }
+  }, [gameState, score, level, lives, digitFig]);
 
   //celebration&boooo
   const playCerebration = () => {
@@ -50,7 +80,13 @@ const BoNgoGame = () => {
     setDigits(newDigits);
   };
 
-  //start-game logics
+  // Calculate the timer dynamically based on the number of digits
+  const calculateTimer = (numDigits: number) => {
+    // A base time of 5 seconds + 2 extra seconds per additional digit
+    return 5 + (numDigits - 3) * 0.5;
+  };
+
+  // Use this logic in the startGame function
   const startGame = () => {
     if (gameState === "gameOver") {
       // Reset everything on Game Over
@@ -66,11 +102,8 @@ const BoNgoGame = () => {
     generateDigits(digitFig);
     setGameState("memorize");
 
-    let newTimer = 5;
-    if (level >= 4 && level < 7) newTimer = 7;
-    else if (level >= 7 && level < 10) newTimer = 9;
-    else if (level >= 10 && level < 13) newTimer = 11;
-    else if (level >= 13 && level <= 15) newTimer = 13;
+    // Set timer dynamically based on the number of digits
+    const newTimer = calculateTimer(digitFig);
     setTimer(newTimer);
   };
 
@@ -105,24 +138,28 @@ const BoNgoGame = () => {
     setInputDigits((prev) => [...prev, number]);
   };
 
-
-  //cgheck results
+  //check results
   const checkResults = () => {
     if (JSON.stringify(digits) === JSON.stringify(inputDigits)) {
       setWin(true);
-      setScore(score + level);
+      // Calculate score based on level and remaining lives
+      const scoreIncrement = level * lives;
+      setScore(score + scoreIncrement); // Update the score by adding the increment
+
       playCerebration();
+
       if (level < 15) {
-        setLevel(level + 1);
-        setDigitFig(digitFig + 2);
+        setLevel((prevLevel) => prevLevel + 1); // Only increment level when the player wins
+        setDigitFig(digitFig + 2); // Increase the digit figure for the next level
       }
     } else {
       setWin(false);
       booplayer();
-      setLives(lives - 1); // Reduce a life when the player gets it wrong
+      setLives((prevLives) => prevLives - 1); // Reduce a life when the player gets it wrong
+
       if (lives === 1) {
-        setGameState("gameOver")
-        setDigitFig((digitFig - digitFig) + 3)
+        setGameState("gameOver");
+        setDigitFig(3); // Reset digit figure when game over
       }
     }
   };
@@ -139,14 +176,14 @@ const BoNgoGame = () => {
       <h1 className="text-center text-gray-100 text-5xl md:text-7xl font-extrabold pt-8">
         bo<span className="text-red-700">N</span>go
       </h1>
-      <div className="flex justify-center gap-16 flex-nowrap px-2">
-        <span className="text-yellow-100 font-semibold  text-xl md:text-3xl">
+      <div className="flex justify-center gap-16 flex-nowrap px-2 py-2">
+        <span className="text-yellow-100 font-semibold text-base md:text-2xl">
           level {level.toString().padStart(2, "0")}
         </span>
-        <span className="text-yellow-100 font-semibold text-xl md:text-3xl">
+        <span className="text-yellow-100 font-semibold text-base md:text-2xl">
           score {score.toString().padStart(2, "0")}
         </span>
-        <span className="text-yellow-100 font-semibold text-xl md:text-3xl">
+        <span className="text-yellow-100 font-semibold text-base md:text-2xl">
           lives {lives.toString().padStart(2, "0")}
         </span>
       </div>
